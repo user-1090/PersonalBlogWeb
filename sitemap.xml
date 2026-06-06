@@ -20,12 +20,4 @@
     <loc>https://yourname.github.io/your-repo-name/post.html?slug=first-blog</loc>
     <changefreq>weekly</changefreq>
   </url>
-  <url>
-    <loc>https://yourname.github.io/your-repo-name/post.html?slug=hello-world</loc>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://yourname.github.io/your-repo-name/post.html?slug=minimal-design</loc>
-    <changefreq>weekly</changefreq>
-  </url>
 </urlset>

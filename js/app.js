@@ -163,6 +163,7 @@ function createMarkdownRenderer() {
   const md = window.markdownit({
     html: true,
     linkify: true,
+    breaks: true,
     typographer: true,
     highlight: function (str, lang) {
       if (lang && window.hljs && window.hljs.getLanguage(lang)) {
