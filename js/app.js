@@ -226,7 +226,7 @@ function renderPostPage() {
     }
 
     // ✨ 修复 2：极其稳妥的路径拼接，不使用 URL 构造器，纯手动拼接防止跨域及层级误判
-    const targetMdUrl = `posts/${encodeURIComponent(slug)}.md`;
+    const targetMdUrl = 'posts/' + encodeURIComponent(slug) + '.md';
 
     fetch(targetMdUrl)
       .then((response) => {
