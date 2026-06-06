@@ -2,7 +2,7 @@
   "name": "minimal-static-blog",
   "version": "1.0.0",
   "private": true,
-  "description": "极简黑白静态博客，适合 GitHub Pages 部署。",
+  "description": "静态博客, GitHub Pages 部署。",
   "scripts": {
     "build": "node scripts/build.js"
   },
