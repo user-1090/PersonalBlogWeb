@@ -213,7 +213,7 @@ function renderPostPage() {
       return;
     }
 
-    fetch(`posts/${encodeURIComponent(slug)}.md`)
+    fetch(`./posts/${encodeURIComponent(slug)}.md`)
       .then((response) => response.text())
       .then((raw) => {
         const { meta, content } = parseFrontmatter(raw);
