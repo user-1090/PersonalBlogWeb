@@ -164,7 +164,7 @@ function createMarkdownRenderer() {
     linkify: true,
     typographer: true,
     highlight: function (str, lang) {
-      if (lang && window.hljs.getLanguage(lang)) {
+      if (lang && window.hljs && window.hljs.getLanguage(lang)) {
         try {
           return '<pre class="hljs"><code>' + window.hljs.highlight(str, { language: lang }).value + '</code></pre>';
         } catch (__) {}
@@ -172,13 +172,27 @@ function createMarkdownRenderer() {
       return '<pre class="hljs"><code>' + md.utils.escapeHtml(str) + '</code></pre>';
     },
   });
-  md.use(window.markdownitAnchor, {
-    permalink: true,
-    permalinkSymbol: '§',
-    permalinkBefore: true,
-    slugify,
-  });
-  md.use(window.markdownitKatex);
+
+  // ✨ 修复：智能识别插件名字（兼顾大写I和小写i），并且如果找不到就跳过，绝对不让页面崩溃
+  const anchorPlugin = window.markdownItAnchor || window.markdownitAnchor;
+  if (anchorPlugin) {
+    md.use(anchorPlugin, {
+      permalink: true,
+      permalinkSymbol: '§',
+      permalinkBefore: true,
+      slugify,
+    });
+  } else {
+    console.warn('⚠️ 目录锚点插件未加载');
+  }
+
+  const katexPlugin = window.markdownitKatex || window.markdownItKatex;
+  if (katexPlugin) {
+    md.use(katexPlugin);
+  } else {
+    console.warn('⚠️ 数学公式插件未加载');
+  }
+
   return md;
 }
 
