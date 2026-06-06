@@ -195,6 +195,16 @@ function renderTOC() {
     .join('');
 }
 
+function escapeHtml(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 function renderPostPage() {
   const urlParams = new URLSearchParams(location.search);
   const slug = urlParams.get('slug');
@@ -213,8 +223,14 @@ function renderPostPage() {
       return;
     }
 
-      fetch(`./posts/${encodeURIComponent(slug)}.md`)
-      .then((response) => response.text())
+    // 构建绝对完整 URL，兼容 GitHub Pages 子目录部署
+    const targetMdUrl = new URL(`./posts/${encodeURIComponent(slug)}.md`, window.location.href).href;
+
+    fetch(targetMdUrl)
+      .then((response) => {
+        if (!response.ok) throw new Error(`HTTP ${response.status} ${response.statusText}`);
+        return response.text();
+      })
       .then((raw) => {
         const { meta, content } = parseFrontmatter(raw);
         const title = meta.title || postMeta.title || '未命名文章';
@@ -229,9 +245,19 @@ function renderPostPage() {
         updateDocumentMeta(title, postMeta.summary || meta.summary || siteConfig.description);
       })
       .catch((error) => {
-        console.error(error);
+        console.error('加载 Markdown 失败：', targetMdUrl, error);
         postTitleEl.textContent = '加载失败';
-        postContentEl.innerHTML = '<p>无法读取文章内容，请稍后重试。</p>';
+        postContentEl.innerHTML = `
+          <div class="content-card">
+            <h3>无法加载文章</h3>
+            <p>请检查以下信息以排查问题：</p>
+            <ul>
+              <li>请求地址: <a href="${escapeHtml(targetMdUrl)}" target="_blank" rel="noreferrer">${escapeHtml(targetMdUrl)}</a></li>
+              <li>错误信息: <code>${escapeHtml(error && error.message ? error.message : String(error))}</code></li>
+            </ul>
+            <p>你可以先确认 `posts/${slug}.md` 是否存在，或在仓库中运行 `node scripts/build.js` 重新生成索引。</p>
+          </div>
+        `;
       });
   });
 }
