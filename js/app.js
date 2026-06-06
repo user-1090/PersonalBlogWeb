@@ -26,9 +26,11 @@ let allPosts = [];
 let activeTag = '';
 let activeSearch = '';
 
+// ✨ 修复 1：使用更安全的纯相对路径读取索引，确保首页正常
 async function loadPosts() {
   try {
     const response = await fetch(siteConfig.postIndex);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
     return await response.json();
   } catch (error) {
     console.error('读取文章索引失败：', error);
@@ -223,8 +225,8 @@ function renderPostPage() {
       return;
     }
 
-    // 构建绝对完整 URL，兼容 GitHub Pages 子目录部署
-    const targetMdUrl = new URL(`./posts/${encodeURIComponent(slug)}.md`, window.location.href).href;
+    // ✨ 修复 2：极其稳妥的路径拼接，不使用 URL 构造器，纯手动拼接防止跨域及层级误判
+    const targetMdUrl = `posts/${encodeURIComponent(slug)}.md`;
 
     fetch(targetMdUrl)
       .then((response) => {
@@ -248,14 +250,14 @@ function renderPostPage() {
         console.error('加载 Markdown 失败：', targetMdUrl, error);
         postTitleEl.textContent = '加载失败';
         postContentEl.innerHTML = `
-          <div class="content-card">
-            <h3>无法加载文章</h3>
-            <p>请检查以下信息以排查问题：</p>
+          <div class="content-card" style="border: 1px solid #ffccc7; background: #fff2f0; padding: 15px; border-radius: 4px;">
+            <h3 style="color: #ff4d4f; margin-top:0;">无法加载文章内容</h3>
+            <p>请确认以下排查路径：</p>
             <ul>
-              <li>请求地址: <a href="${escapeHtml(targetMdUrl)}" target="_blank" rel="noreferrer">${escapeHtml(targetMdUrl)}</a></li>
-              <li>错误信息: <code>${escapeHtml(error && error.message ? error.message : String(error))}</code></li>
+              <li>实际请求相对路径: <code style="background:#fff; padding:2px 4px;">${escapeHtml(targetMdUrl)}</code></li>
+              <li>错误详情: <code>${escapeHtml(error && error.message ? error.message : String(error))}</code></li>
             </ul>
-            <p>你可以先确认 `posts/${slug}.md` 是否存在，或在仓库中运行 `node scripts/build.js` 重新生成索引。</p>
+            <p style="font-size:13px; color:#666;">请确保你的 GitHub 仓库根目录下存在 <code style="background:#fff; padding:2px 4px;">posts/${slug}.md</code> 文件，且文件名大小写完全一致！</p>
           </div>
         `;
       });
