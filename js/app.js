@@ -159,6 +159,7 @@ function initIndexPage() {
 }
 
 function createMarkdownRenderer() {
+  // 1. 初始化 markdown-it 核心引擎
   const md = window.markdownit({
     html: true,
     linkify: true,
@@ -173,24 +174,43 @@ function createMarkdownRenderer() {
     },
   });
 
-  // ✨ 修复：智能识别插件名字（兼顾大写I和小写i），并且如果找不到就跳过，绝对不让页面崩溃
-  const anchorPlugin = window.markdownItAnchor || window.markdownitAnchor;
-  if (anchorPlugin) {
-    md.use(anchorPlugin, {
-      permalink: true,
-      permalinkSymbol: '§',
-      permalinkBefore: true,
-      slugify,
-    });
-  } else {
-    console.warn('⚠️ 目录锚点插件未加载');
+  // 2. 挂载目录锚点插件（终极防弹兼容版）
+  try {
+    let anchorPlugin = window.markdownItAnchor || window.markdownitAnchor;
+    // 核心修复：如果它是一个对象且包含 .default 函数，就把外壳剥掉
+    if (anchorPlugin && typeof anchorPlugin !== 'function' && typeof anchorPlugin.default === 'function') {
+      anchorPlugin = anchorPlugin.default; 
+    }
+    
+    if (typeof anchorPlugin === 'function') {
+      md.use(anchorPlugin, {
+        permalink: true,
+        permalinkSymbol: '§',
+        permalinkBefore: true,
+        // 增加兜底的 slugify 逻辑，防止全局变量丢失引发二次崩溃
+        slugify: typeof slugify === 'function' ? slugify : (s => encodeURIComponent(String(s).trim().toLowerCase().replace(/\s+/g, '-')))
+      });
+    } else {
+      console.warn('⚠️ 目录锚点插件未生效：找不到可用的函数对象');
+    }
+  } catch (e) {
+    console.warn('⚠️ 目录锚点插件挂载异常:', e);
   }
 
-  const katexPlugin = window.markdownitKatex || window.markdownItKatex;
-  if (katexPlugin) {
-    md.use(katexPlugin);
-  } else {
-    console.warn('⚠️ 数学公式插件未加载');
+  // 3. 挂载数学公式插件
+  try {
+    let katexPlugin = window.markdownItKatex || window.markdownitKatex;
+    if (katexPlugin && typeof katexPlugin !== 'function' && typeof katexPlugin.default === 'function') {
+      katexPlugin = katexPlugin.default;
+    }
+    
+    if (typeof katexPlugin === 'function') {
+      md.use(katexPlugin);
+    } else {
+      console.warn('⚠️ 数学公式插件未生效：找不到可用的函数对象');
+    }
+  } catch (e) {
+    console.warn('⚠️ 数学公式插件挂载异常:', e);
   }
 
   return md;
