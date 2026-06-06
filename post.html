@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="文章页面，支持 Markdown 渲染、代码高亮与数学公式。" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="文章 - 简约个人博客" />
+  <meta property="og:description" content="文章页面，支持 Markdown 渲染、代码高亮与数学公式。" />
+  <meta property="og:image" content="assets/favicon.svg" />
+  <title>文章 - 简约个人博客</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css" integrity="sha384-fuX6D7bDp1M6f2R0rKXx7uKYyTjmquqOLKmds5qz6tPvWd3qs+ZW2dZlz0pj6zCB" crossorigin="anonymous" />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+</head>
+<body data-page="post">
+  <div class="page-shell">
+    <header class="site-header">
+      <div>
+        <p class="eyebrow">文章详情</p>
+        <h1 id="post-title">加载中...</h1>
+        <p id="post-meta" class="post-meta"></p>
+      </div>
+      <nav class="top-nav">
+        <a href="index.html">首页</a>
+        <a href="about.html">关于</a>
+      </nav>
+    </header>
+
+    <main class="post-layout">
+      <article class="content-card post-content" id="post-content"></article>
+      <aside class="toc-card" id="toc-card">
+        <p class="toc-title">目录</p>
+        <nav id="toc"></nav>
+      </aside>
+    </main>
+
+    <section class="post-nav-links">
+      <a id="prev-post" class="post-nav-item" href="#"></a>
+      <a id="next-post" class="post-nav-item" href="#"></a>
+    </section>
+  </div>
+
+  <div class="image-preview" id="image-preview" aria-hidden="true">
+    <button class="preview-close" id="preview-close" aria-label="关闭预览">×</button>
+    <img id="preview-image" alt="图片预览" />
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2026 简约个人博客 • Markdown 静态文章</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it@13.0.1/dist/markdown-it.min.js" integrity="sha384-KTSOLvXy3sG0yw8QyJzX5s2QkuZS8tWaiOPQbpiD3+WBv4HfrC7QiTWJ68n0Pm47" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it-anchor@8.6.2/dist/markdown-it-anchor.min.js" integrity="sha384-SHso3Lhq3J/7y/Z90k0LzCLL9K+0P3piT91jY2n4jH0WMhkk7qJYu6wDSdzbeA1i" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it-katex@4.1.0/dist/markdown-it-katex.min.js" integrity="sha384-/6PW5Hn4bK5yPquElMwzAsgUvbIdmxBwepQEdM0+/C+ViVfi2yk1NgN9X8t8Lnxv" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/lib/common.min.js" integrity="sha384-3urkDk2b3/PH7npZXGQ4/q3RkS+K8QOz9BWdzb4PMjpqNQq6g8v4Y84n5w6zO874" crossorigin="anonymous"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
