@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://yourname.github.io/your-repo-name/</loc>
+    <loc>https://user-1090.github.io/PersonalBlogWeb/</loc>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://yourname.github.io/your-repo-name/index.html</loc>
+    <loc>https://user-1090.github.io/PersonalBlogWeb/index.html</loc>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://yourname.github.io/your-repo-name/about.html</loc>
+    <loc>https://user-1090.github.io/PersonalBlogWeb/about.html</loc>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://yourname.github.io/your-repo-name/post.html?slug=hello-world</loc>
+    <loc>https://user-1090.github.io/PersonalBlogWeb/post.html?slug=hello-world</loc>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://yourname.github.io/your-repo-name/post.html?slug=minimal-design</loc>
+    <loc>https://user-1090.github.io/PersonalBlogWeb/post.html?slug=minimal-design</loc>
     <changefreq>weekly</changefreq>
   </url>
 </urlset>
