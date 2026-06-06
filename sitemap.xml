@@ -17,6 +17,10 @@
     <changefreq>weekly</changefreq>
   </url>
   <url>
+    <loc>https://yourname.github.io/your-repo-name/post.html?slug=1.0v%E8%AE%B0%E5%BD%95</loc>
+    <changefreq>weekly</changefreq>
+  </url>
+  <url>
     <loc>https://yourname.github.io/your-repo-name/post.html?slug=first-blog</loc>
     <changefreq>weekly</changefreq>
   </url>
