@@ -103,7 +103,6 @@ window.addEventListener('DOMContentLoaded', function () {
   const markdownRenderer = createMarkdownRenderer();
   const editor = new EasyMDE({
     element: document.getElementById('editor'),
-    autoDownloadFontAwesome: false,
     spellChecker: false,
     placeholder: '在这里编写 Markdown 内容，支持代码块、图片语法和实时预览。',
     status: false,
