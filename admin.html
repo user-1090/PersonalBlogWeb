@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="PersonalBlogWeb 后台写作工具：Markdown 在线编辑与导出。" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="写作后台 - Houdwwe's Blog" />
+  <meta property="og:description" content="Markdown 在线编辑和本地导出工具。" />
+  <meta property="og:image" content="assets/favicon.svg" />
+  <title>写作后台 - Houdwwe's Blog</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/easymde@2.19.0/dist/easymde.min.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+</head>
+<body data-page="admin">
+  <div class="page-shell">
+    <header class="site-header">
+      <div>
+        <p class="eyebrow">后台写作</p>
+        <h1>写作工具</h1>
+        <p class="intro">使用 Markdown 编辑，实时预览，生成兼容当前项目的文章文件。</p>
+      </div>
+      <nav class="top-nav">
+        <a href="index.html">首页</a>
+        <a href="about.html">关于</a>
+        <a href="admin.html" class="active">写作</a>
+      </nav>
+    </header>
+
+    <section class="admin-toolbar">
+      <div class="admin-field-row">
+        <label for="title">标题</label>
+        <input id="title" type="text" placeholder="请输入文章标题" autocomplete="off" />
+      </div>
+      <div class="admin-field-row">
+        <label for="slug">Slug（用于文件名）</label>
+        <input id="slug" type="text" placeholder="将根据标题自动生成，中文标题请手动填写" autocomplete="off" />
+      </div>
+      <div class="admin-field-row">
+        <label for="tags">标签</label>
+        <input id="tags" type="text" placeholder="标签1, 标签2" autocomplete="off" />
+      </div>
+      <div class="admin-field-row">
+        <label for="summary">摘要</label>
+        <textarea id="summary" rows="2" placeholder="请输入文章摘要"></textarea>
+      </div>
+      <div class="admin-meta-row">
+        <div class="admin-meta-item">
+          <span>日期</span>
+          <strong id="date"></strong>
+        </div>
+        <button id="export-button" class="button-primary" type="button">导出 Markdown</button>
+      </div>
+    </section>
+
+    <main class="admin-layout">
+      <section class="admin-panel">
+        <div class="panel-label">Markdown 编辑</div>
+        <textarea id="editor"></textarea>
+      </section>
+      <section class="admin-preview">
+        <div class="panel-label">实时预览</div>
+        <article class="post-content" id="preview"></article>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/markdown-it@13.0.1/dist/markdown-it.min.js"></script>
+  <script src="https://unpkg.com/markdown-it-anchor@8.6.2/dist/markdown-it-anchor.min.js"></script>
+  <script src="https://unpkg.com/markdown-it-katex@4.1.0/dist/markdown-it-katex.min.js"></script>
+  <script src="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/highlight.min.js"></script>
+  <script src="https://unpkg.com/easymde@2.19.0/dist/easymde.min.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>
