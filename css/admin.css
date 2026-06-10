@@ -109,6 +109,18 @@ body[data-page="admin"] {
   min-height: 64vh;
 }
 
+.editor-toolbar button,
+.editor-toolbar button i {
+  color: #111111 !important;
+}
+
+.editor-toolbar button:hover,
+.editor-toolbar button:hover i,
+.editor-toolbar button.active,
+.editor-toolbar button.active i {
+  color: #000000 !important;
+}
+
 .admin-preview {
   display: flex;
   flex-direction: column;
