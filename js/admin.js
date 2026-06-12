@@ -100,7 +100,6 @@ window.addEventListener('DOMContentLoaded', function () {
   const exportButton = document.getElementById('export-button');
   const saveDraftButton = document.getElementById('save-draft-button');
   const clearDraftButton = document.getElementById('clear-draft-button');
-  const draftStatus = document.getElementById('draft-status');
   const preview = document.getElementById('preview');
   const DRAFT_KEY = 'blogDraft';
 
@@ -141,14 +140,6 @@ window.addEventListener('DOMContentLoaded', function () {
     return `${yyyy}-${mm}-${dd} ${hh}:${min}`;
   }
 
-  function updateDraftStatus(saved, savedAt) {
-    if (saved) {
-      draftStatus.textContent = `草稿已保存 最后保存：${savedAt}`;
-    } else {
-      draftStatus.textContent = '未保存草稿';
-    }
-  }
-
   function saveDraft() {
     const draft = {
       title: titleInput.value.trim(),
@@ -159,13 +150,11 @@ window.addEventListener('DOMContentLoaded', function () {
       savedAt: formatSavedAt(new Date()),
     };
     localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
-    updateDraftStatus(true, draft.savedAt);
   }
 
   function loadDraft() {
     const rawDraft = localStorage.getItem(DRAFT_KEY);
     if (!rawDraft) {
-      updateDraftStatus(false);
       updatePreview();
       return;
     }
@@ -181,10 +170,8 @@ window.addEventListener('DOMContentLoaded', function () {
       summaryInput.value = draft.summary || '';
       editor.value(draft.content || '');
       updatePreview();
-      updateDraftStatus(true, draft.savedAt || formatSavedAt(new Date()));
     } catch (error) {
       console.warn('加载草稿失败', error);
-      updateDraftStatus(false);
       updatePreview();
     }
   }
@@ -197,7 +184,6 @@ window.addEventListener('DOMContentLoaded', function () {
     tagsInput.value = '';
     summaryInput.value = '';
     editor.value('');
-    updateDraftStatus(false);
     updatePreview();
   }
 
@@ -257,6 +243,5 @@ window.addEventListener('DOMContentLoaded', function () {
     const markdown = buildMarkdown({ title, date: today, tags, summary, content });
     downloadFile(filename, markdown);
     localStorage.removeItem(DRAFT_KEY);
-    updateDraftStatus(false);
   });
 });
