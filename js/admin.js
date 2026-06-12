@@ -98,7 +98,11 @@ window.addEventListener('DOMContentLoaded', function () {
   const summaryInput = document.getElementById('summary');
   const dateOutput = document.getElementById('date');
   const exportButton = document.getElementById('export-button');
+  const saveDraftButton = document.getElementById('save-draft-button');
+  const clearDraftButton = document.getElementById('clear-draft-button');
+  const draftStatus = document.getElementById('draft-status');
   const preview = document.getElementById('preview');
+  const DRAFT_KEY = 'blogDraft';
 
   const markdownRenderer = createMarkdownRenderer();
   const editor = new EasyMDE({
@@ -128,6 +132,75 @@ window.addEventListener('DOMContentLoaded', function () {
     preview.innerHTML = markdownRenderer.render(editor.value());
   }
 
+  function formatSavedAt(date) {
+    const yyyy = date.getFullYear();
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const dd = String(date.getDate()).padStart(2, '0');
+    const hh = String(date.getHours()).padStart(2, '0');
+    const min = String(date.getMinutes()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd} ${hh}:${min}`;
+  }
+
+  function updateDraftStatus(saved, savedAt) {
+    if (saved) {
+      draftStatus.textContent = `草稿已保存 最后保存：${savedAt}`;
+    } else {
+      draftStatus.textContent = '未保存草稿';
+    }
+  }
+
+  function saveDraft() {
+    const draft = {
+      title: titleInput.value.trim(),
+      slug: slugInput.value.trim(),
+      tags: tagsInput.value.trim(),
+      summary: summaryInput.value.trim(),
+      content: editor.value(),
+      savedAt: formatSavedAt(new Date()),
+    };
+    localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+    updateDraftStatus(true, draft.savedAt);
+  }
+
+  function loadDraft() {
+    const rawDraft = localStorage.getItem(DRAFT_KEY);
+    if (!rawDraft) {
+      updateDraftStatus(false);
+      updatePreview();
+      return;
+    }
+
+    try {
+      const draft = JSON.parse(rawDraft);
+      titleInput.value = draft.title || '';
+      slugInput.value = draft.slug || '';
+      if (draft.slug) {
+        slugInput.dataset.manual = 'true';
+      }
+      tagsInput.value = draft.tags || '';
+      summaryInput.value = draft.summary || '';
+      editor.value(draft.content || '');
+      updatePreview();
+      updateDraftStatus(true, draft.savedAt || formatSavedAt(new Date()));
+    } catch (error) {
+      console.warn('加载草稿失败', error);
+      updateDraftStatus(false);
+      updatePreview();
+    }
+  }
+
+  function clearDraft() {
+    localStorage.removeItem(DRAFT_KEY);
+    titleInput.value = '';
+    slugInput.value = '';
+    slugInput.removeAttribute('data-manual');
+    tagsInput.value = '';
+    summaryInput.value = '';
+    editor.value('');
+    updateDraftStatus(false);
+    updatePreview();
+  }
+
   function updateSlugFromTitle() {
     if (!slugInput.dataset.manual) {
       const generated = slugify(titleInput.value);
@@ -152,7 +225,14 @@ window.addEventListener('DOMContentLoaded', function () {
   tagsInput.addEventListener('input', updatePreview);
   summaryInput.addEventListener('input', updatePreview);
 
-  updatePreview();
+  saveDraftButton.addEventListener('click', saveDraft);
+  clearDraftButton.addEventListener('click', () => {
+    if (confirm('确认删除当前草稿？')) {
+      clearDraft();
+    }
+  });
+
+  loadDraft();
 
   exportButton.addEventListener('click', () => {
     const title = titleInput.value.trim();
@@ -176,5 +256,7 @@ window.addEventListener('DOMContentLoaded', function () {
     const filename = `${slug}.md`;
     const markdown = buildMarkdown({ title, date: today, tags, summary, content });
     downloadFile(filename, markdown);
+    localStorage.removeItem(DRAFT_KEY);
+    updateDraftStatus(false);
   });
 });

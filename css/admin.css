@@ -59,6 +59,44 @@ body[data-page="admin"] {
   color: var(--admin-muted);
 }
 
+.admin-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.admin-button-row {
+  display: inline-flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.button-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 20px;
+  border: 1px solid var(--admin-text);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--admin-text);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.button-secondary:hover {
+  background: #f0f0f0;
+}
+
+.admin-draft-status {
+  color: var(--admin-muted);
+  font-size: 0.92rem;
+  line-height: 1.4;
+  text-align: right;
+}
+
 .admin-meta-item strong {
   font-size: 1rem;
   color: var(--admin-text);
